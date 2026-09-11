@@ -14,6 +14,13 @@ if not (vim.env.LAZY or (vim.uv or vim.loop).fs_stat(lazypath)) then
 end
 
 vim.opt.rtp:prepend(lazypath)
+vim.api.nvim_create_autocmd("BufNewFile", {
+  pattern = { "*.h", "*.hpp" },
+  callback = function()
+    vim.api.nvim_buf_set_lines(0, 0, 0, false, { "#pragma once", "" })
+    vim.cmd "normal G" -- Move cursor to the end
+  end,
+})
 
 -- validate that lazy is available
 if not pcall(require, "lazy") then
